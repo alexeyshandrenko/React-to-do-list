@@ -1,41 +1,47 @@
 import { useState } from 'react';
 import styles from './header.module.css';
 import searchIcon from './../../assets/search.svg';
+import sortIcon from './../../assets/sort-task.svg';
 
-const Header = () => {
-	const [task, setTask] = useState('');
-	const [search, setSearch] = useState('');
+const Header = ({ search, setSearch, createTodo, sorted, setSorted }) => {
+	const [todo, setTodo] = useState('');
 
 	const handleChange = (e) => {
-		const { value } = e.target;
-		setTask(value);
-	};
-
-	const handleChangeSearch = (e) => {
-		const { value } = e.target;
-		setSearch(value);
-	};
-
-	const handleClick = () => {
-		if (task) {
-			console.log(task);
+		const { value, name } = e.target;
+		switch (name) {
+			case 'todo':
+				setTodo(value);
+				break;
+			default:
+				setSearch(value);
 		}
 	};
 
-	const handleKeyPress = (e) => {
-		if (e.key === 'Enter') {
-			handleClick();
+	const handleKeyPress = async (e) => {
+		if (e.key === 'Enter' && todo) {
+			await createTodo(todo);
+			setTodo('');
 		}
 	};
 
 	return (
 		<div className={styles.header}>
+			<button
+				onClick={() => setSorted(!sorted)}
+				className={
+					sorted ? `${styles.button} ${styles.button_active}` : styles.button
+				}
+			>
+				<img src={sortIcon} alt="sort-icon" />
+			</button>
+
 			<div className={styles.headerInput}>
 				<input
 					className={styles.input}
+					name="todo"
 					type="text"
 					placeholder="Add a new task"
-					value={task}
+					value={todo}
 					onChange={handleChange}
 					onKeyDown={handleKeyPress}
 				/>
@@ -44,10 +50,11 @@ const Header = () => {
 				<img className={styles.icon} src={searchIcon} alt="search-icon" />
 				<input
 					type="text"
+					name="search"
 					className={styles.search}
 					placeholder="Search tasks..."
 					value={search}
-					onChange={handleChangeSearch}
+					onChange={handleChange}
 				/>
 			</div>
 		</div>

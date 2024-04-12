@@ -7,8 +7,32 @@
 	justify-content: space-between;
 }
 
+.field {
+	flex: 0.8;
+	flex-wrap: wrap;
+}
+
 .buttons {
 	display: flex;
 	justify-content: space-between;
 	flex: 0.13;
+}
+
+.button {
+	background: none;
+}
+
+.button:active {
+	opacity: 0.5;
+}
+
+.button:hover {
+	opacity: 0.7;
+}
+
+.input {
+	width: 80%;
+	font-size: 15px;
+	font-weight: 800;
+	line-height: 24px;
 }
