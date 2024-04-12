@@ -1,0 +1,21 @@
+.wrapper {
+	flex: 1;
+}
+
+.wrapper_center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.list {
+	margin-bottom: 60px;
+}
+
+.list li {
+	margin-bottom: 16px;
+}
+
+.list li:last-child {
+	margin-bottom: 0;
+}

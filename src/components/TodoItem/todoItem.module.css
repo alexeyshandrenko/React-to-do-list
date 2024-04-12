@@ -1,0 +1,14 @@
+.item {
+	padding: 22px;
+	border-radius: 10px;
+	border: 1px solid #1e1e1e;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.buttons {
+	display: flex;
+	justify-content: space-between;
+	flex: 0.13;
+}
