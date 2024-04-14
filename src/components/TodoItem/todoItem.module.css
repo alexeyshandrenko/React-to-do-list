@@ -4,35 +4,24 @@
 	border: 1px solid #1e1e1e;
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
 }
 
 .field {
-	flex: 0.8;
-	flex-wrap: wrap;
-}
-
-.buttons {
+	flex: 1;
 	display: flex;
-	justify-content: space-between;
-	flex: 0.13;
-}
-
-.button {
+	justify-content: start;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 	background: none;
 }
 
-.button:active {
-	opacity: 0.5;
-}
-
-.button:hover {
-	opacity: 0.7;
-}
-
-.input {
-	width: 80%;
+.text {
+	color: #1e1e1e;
 	font-size: 15px;
 	font-weight: 800;
 	line-height: 24px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 }

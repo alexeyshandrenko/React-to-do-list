@@ -1,11 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import './index.css';
-import Todo from './components/Todo/Todo';
+import Router from './Router.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 	<React.StrictMode>
-		<Todo />
+		<BrowserRouter>
+			<Router />
+		</BrowserRouter>
 	</React.StrictMode>,
 );

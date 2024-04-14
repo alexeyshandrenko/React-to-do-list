@@ -1,7 +1,7 @@
 import styles from './error.module.css';
 
-const Error = ({ children }) => {
+const ErrorMessage = ({ children }) => {
 	return <p className={styles.error}>{`${children} :(`}</p>;
 };
 
-export default Error;
+export default ErrorMessage;

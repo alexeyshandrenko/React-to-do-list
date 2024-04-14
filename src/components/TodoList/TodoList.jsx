@@ -1,12 +1,10 @@
 import styles from './todoList.module.css';
 
 import Loader from '../Loader';
-import Error from '../Error';
-import Title from '../Title';
+import ErrorMessage from '../ErrorMessage';
 import TodoItem from '../TodoItem';
-import Description from '../Description';
 
-const TodoList = ({ todos, loading, error, editTodo, deleteTodo, search }) => {
+const TodoList = ({ todos, loading, error, search }) => {
 	const noItemsFound = search && todos && todos.length === 0;
 	return (
 		<div
@@ -17,21 +15,15 @@ const TodoList = ({ todos, loading, error, editTodo, deleteTodo, search }) => {
 			}
 		>
 			{loading && <Loader />}
-			{error && <Error>{error}</Error>}
-			{noItemsFound && <Description>Tasks not found!</Description>}
+			{error && <ErrorMessage>{error}</ErrorMessage>}
+			{noItemsFound && <p className={styles.text}>Tasks not found!</p>}
 			{!loading && todos && !noItemsFound && (
 				<>
-					<Title>Tasks to do - {todos.length}</Title>
+					<h2 className={styles.title}>Tasks to do - {todos.length}</h2>
 					<ul className={styles.list}>
 						{todos.map((todo) => {
 							return (
-								<TodoItem
-									key={todo.id}
-									id={todo.id}
-									title={todo.title}
-									editTodo={editTodo}
-									deleteTodo={deleteTodo}
-								/>
+								<TodoItem key={todo.id} id={todo.id} title={todo.title} />
 							);
 						})}
 					</ul>

@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 
 const useFetch = (url) => {
-	const [todos, setTodos] = useState(null);
+	const [data, setData] = useState(null);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState('');
 
 	useEffect(() => {
-		const getTodos = async () => {
+		const getData = async () => {
 			setLoading(true);
 			setError('');
 			setTimeout(async () => {
@@ -16,7 +16,7 @@ const useFetch = (url) => {
 						throw new Error('Error was happened!');
 					}
 					const data = await response.json();
-					setTodos(data);
+					setData(data);
 				} catch (err) {
 					setError(err.message);
 				} finally {
@@ -25,10 +25,10 @@ const useFetch = (url) => {
 			}, 1000);
 		};
 
-		getTodos();
+		getData();
 	}, [url]);
 
-	return { todos, setTodos, loading, error };
+	return { data, setData, loading, error };
 };
 
 export default useFetch;
