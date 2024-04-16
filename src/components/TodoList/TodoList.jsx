@@ -1,11 +1,15 @@
 import styles from './todoList.module.css';
-
 import Loader from '../Loader';
 import ErrorMessage from '../ErrorMessage';
 import TodoItem from '../TodoItem';
+import { useTodosContext } from '../../hooks/useTodosContext';
+import { searchAndSortTodos } from '../../utils/methods';
 
-const TodoList = ({ todos, loading, error, search }) => {
+const TodoList = ({ search, sorted }) => {
+	const { todos, loading, error } = useTodosContext();
 	const noItemsFound = search && todos && todos.length === 0;
+	const searchedAndSortedTodos = searchAndSortTodos(todos, sorted, search);
+
 	return (
 		<div
 			className={
@@ -21,7 +25,7 @@ const TodoList = ({ todos, loading, error, search }) => {
 				<>
 					<h2 className={styles.title}>Tasks to do - {todos.length}</h2>
 					<ul className={styles.list}>
-						{todos.map((todo) => {
+						{searchedAndSortedTodos.map((todo) => {
 							return (
 								<TodoItem key={todo.id} id={todo.id} title={todo.title} />
 							);

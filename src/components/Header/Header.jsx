@@ -2,9 +2,11 @@ import { useState } from 'react';
 import styles from './header.module.css';
 import searchIcon from './../../assets/search.svg';
 import sortIcon from './../../assets/sort-task.svg';
+import { useTodosContext } from '../../hooks/useTodosContext';
 
-const Header = ({ search, setSearch, createTodo, sorted, setSorted }) => {
+const Header = ({ search, setSearch, sorted, setSorted }) => {
 	const [todo, setTodo] = useState('');
+	const { createTodo } = useTodosContext();
 
 	const handleChange = (e) => {
 		const { value, name } = e.target;

@@ -5,22 +5,16 @@ import back from './../../assets/arrow-back.svg';
 import editTask from './../../assets/edit-task.svg';
 import editTaskActive from './../../assets/edit-task-active.svg';
 import deleteTask from './../../assets/delete-task.svg';
-import useFetch from '../../hooks/useFetch';
-import { deleteTodoAPI, editTodoAPI } from '../../api/api';
-import Loader from '../../components/Loader';
+import { useTodosContext } from '../../hooks/useTodosContext';
 
 const Task = () => {
-	const textareaRef = useRef(null);
+	const [isEditable, setIsEditable] = useState(false);
+	const [description, setDescription] = useState('');
 	const navigate = useNavigate();
 	const { id } = useParams();
-	const [isEditable, setIsEditable] = useState(false);
-	const {
-		data: todo,
-		setData: setTodo,
-		loading,
-		error,
-	} = useFetch(`http://localhost:3001/todos/${id}`);
-	const [description, setDescription] = useState('');
+	const textareaRef = useRef(null);
+	const { getTodoById, editTodo, deleteTodo } = useTodosContext();
+	const todo = getTodoById(id);
 
 	useEffect(() => {
 		if (isEditable && textareaRef.current) {
@@ -28,19 +22,14 @@ const Task = () => {
 		}
 	}, [isEditable]);
 
-	const editTodo = async (id, title) => {
-		const data = await editTodoAPI(id, title);
-		if (data) {
-			setTodo(data);
-			setIsEditable(false);
-		}
+	const toggleEditTodo = async (id, title) => {
+		await editTodo(id, title);
+		setIsEditable(false);
 	};
 
-	const deleteTodo = async (id) => {
-		const data = await deleteTodoAPI(id);
-		if (data) {
-			navigate(-1);
-		}
+	const toggleDeleteTodo = async (id) => {
+		await deleteTodo(id);
+		navigate(-1);
 	};
 
 	const toggleEditable = () => {
@@ -57,16 +46,13 @@ const Task = () => {
 			</div>
 			<div
 				className={
-					loading || error || !todo
+					!todo
 						? `${styles.wrapper} ${styles.wrapper_center}`
 						: `${styles.wrapper}`
 				}
 			>
-				{loading && <Loader />}
-				{!loading && error && !todo && (
-					<p className={styles.text}>Task not found :(</p>
-				)}
-				{!loading && !error && todo && (
+				{!todo && <p className={styles.text}>Task not found :(</p>}
+				{todo && (
 					<div className={styles.field}>
 						<div className={styles.buttons}>
 							<button onClick={toggleEditable} className={styles.button}>
@@ -76,7 +62,7 @@ const Task = () => {
 								/>
 							</button>
 							<button
-								onClick={() => deleteTodo(id)}
+								onClick={() => toggleDeleteTodo(id)}
 								className={styles.button}
 							>
 								<img src={deleteTask} alt={`delete-task-${id}`} />
@@ -91,7 +77,7 @@ const Task = () => {
 									className={styles.textarea}
 								/>
 								<button
-									onClick={() => editTodo(id, description)}
+									onClick={() => toggleEditTodo(id, description)}
 									className={styles.buttonSave}
 								>
 									Save
