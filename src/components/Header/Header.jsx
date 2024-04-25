@@ -2,11 +2,12 @@ import { useState } from 'react';
 import styles from './header.module.css';
 import searchIcon from './../../assets/search.svg';
 import sortIcon from './../../assets/sort-task.svg';
-import { useTodosContext } from '../../hooks/useTodosContext';
+import { useDispatch } from 'react-redux';
+import { createTodoAsyncAction } from '../../store/actions/actions';
 
 const Header = ({ search, setSearch, sorted, setSorted }) => {
 	const [todo, setTodo] = useState('');
-	const { createTodo } = useTodosContext();
+	const dispatch = useDispatch();
 
 	const handleChange = (e) => {
 		const { value, name } = e.target;
@@ -19,10 +20,9 @@ const Header = ({ search, setSearch, sorted, setSorted }) => {
 		}
 	};
 
-	const handleKeyPress = async (e) => {
+	const handleKeyPress = (e) => {
 		if (e.key === 'Enter' && todo) {
-			await createTodo(todo);
-			setTodo('');
+			dispatch(createTodoAsyncAction(todo)).then(() => setTodo(''));
 		}
 	};
 
