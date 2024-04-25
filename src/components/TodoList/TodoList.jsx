@@ -6,9 +6,11 @@ import ErrorMessage from '../ErrorMessage';
 import TodoItem from '../TodoItem';
 
 const TodoList = ({ search, sorted }) => {
-	const { todos, loading, error } = useSelector((state) => state);
-	const noItemsFound = search && todos && todos.length === 0;
+	const { todos, loading, error } = useSelector((state) => state.todoState);
+
 	const searchedAndSortedTodos = searchAndSortTodos(todos, sorted, search);
+	const noItemsFound =
+		search && searchedAndSortedTodos && searchedAndSortedTodos.length === 0;
 
 	return (
 		<div

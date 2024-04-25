@@ -3,6 +3,8 @@ import {
 	SET_LOADING_ACTION,
 	SET_TODOS_ACTION,
 	CREATE_TODO_ACTION,
+	EDIT_TODO_ACTION,
+	DELETE_TODO_ACTION,
 } from '../types/types';
 
 const initialState = {
@@ -19,6 +21,20 @@ export const todoReducer = (state = initialState, action) => {
 			return { ...state, todos: payload };
 		case CREATE_TODO_ACTION:
 			return { ...state, todos: [payload, ...state.todos] };
+		case EDIT_TODO_ACTION:
+			return {
+				...state,
+				todos: [
+					...state.todos.map((todo) =>
+						todo.id === payload.id ? payload : todo,
+					),
+				],
+			};
+		case DELETE_TODO_ACTION:
+			return {
+				...state,
+				todos: [...state.todos.filter((todo) => todo.id !== payload.id)],
+			};
 		case SET_LOADING_ACTION:
 			return { ...state, loading: payload };
 		case SET_ERROR_ACTION:
