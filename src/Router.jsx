@@ -1,8 +1,10 @@
+import { lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Home from './screens/Home/Home';
-import Task from './screens/Task';
 import Layout from './components/Layout';
-import NotFound from './screens/NotFound/NotFound';
+
+const Home = lazy(() => import('./screens/Home/Home'));
+const Task = lazy(() => import('./screens/Task'));
+const NotFound = lazy(() => import('./screens/NotFound/NotFound'));
 
 const Router = () => {
 	return (

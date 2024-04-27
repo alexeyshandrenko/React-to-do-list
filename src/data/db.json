@@ -1,3 +1,8 @@
 {
-  "todos": []
+  "todos": [
+    {
+      "title": "bananas",
+      "id": 1
+    }
+  ]
 }
