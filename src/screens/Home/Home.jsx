@@ -1,17 +1,16 @@
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { getTodosAsyncAction } from '../../store/actions/actions';
+import { useTodoStore } from '../../store/TodoStore';
 import Header from './../../components/Header/Header';
 import TodoList from './../../components/TodoList/TodoList';
 
 const Home = () => {
 	const [search, setSearch] = useState('');
 	const [sorted, setSorted] = useState(false);
-	const dispatch = useDispatch();
+	const getTodos = useTodoStore((state) => state.getTodos);
 
 	useEffect(() => {
-		dispatch(getTodosAsyncAction);
-	}, [dispatch]);
+		getTodos();
+	}, [getTodos]);
 
 	return (
 		<>

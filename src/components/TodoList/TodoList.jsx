@@ -1,12 +1,14 @@
 import styles from './todoList.module.css';
-import { useSelector } from 'react-redux';
+import { useTodoStore } from '../../store/TodoStore';
 import { searchAndSortTodos } from '../../utils/methods';
 import Loader from '../Loader';
 import ErrorMessage from '../ErrorMessage';
 import TodoItem from '../TodoItem';
 
 const TodoList = ({ search, sorted }) => {
-	const { todos, loading, error } = useSelector((state) => state.todoState);
+	const todos = useTodoStore((state) => state.todos);
+	const loading = useTodoStore((state) => state.loading);
+	const error = useTodoStore((state) => state.error);
 
 	const searchedAndSortedTodos = searchAndSortTodos(todos, sorted, search);
 	const noItemsFound =

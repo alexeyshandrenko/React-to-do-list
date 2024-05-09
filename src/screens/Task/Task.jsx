@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { deleteTodoAsyncAction, editTodoAsyncAction } from '../../store/actions/actions';
+import { useTodoStore } from '../../store/TodoStore';
 import styles from './task.module.css';
 import back from './../../assets/arrow-back.svg';
 import editTask from './../../assets/edit-task.svg';
@@ -14,8 +13,9 @@ const Task = () => {
 	const navigate = useNavigate();
 	const { id } = useParams();
 	const textareaRef = useRef(null);
-	const dispatch = useDispatch();
-	const { todos } = useSelector((state) => state.todoState);
+	const editTodo = useTodoStore((state) => state.editTodo);
+	const deleteTodo = useTodoStore((state) => state.deleteTodo);
+	const todos = useTodoStore((state) => state.todos);
 	const todo = Array.isArray(todos)
 		? todos.find((el) => el.id.toString() === id)
 		: null;
@@ -27,11 +27,15 @@ const Task = () => {
 	}, [isEditable]);
 
 	const toggleEditTodo = async (id, title) => {
-		dispatch(editTodoAsyncAction(id, title)).then(() => setIsEditable(false));
+		await editTodo(id, title);
+		console.log('edit');
+		setIsEditable(false);
 	};
 
 	const toggleDeleteTodo = async (id) => {
-		dispatch(deleteTodoAsyncAction(id)).then(() => navigate(-1));
+		await deleteTodo(id);
+		console.log('delete');
+		navigate(-1);
 	};
 
 	const toggleEditable = () => {
