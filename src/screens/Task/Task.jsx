@@ -1,11 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useTodoStore } from '../../store/TodoStore';
+import { useEditTodo } from '../../hooks/useEditTodo';
+import { useDeleteTodo } from '../../hooks/useDeleteTodo';
 import styles from './task.module.css';
 import back from './../../assets/arrow-back.svg';
 import editTask from './../../assets/edit-task.svg';
 import editTaskActive from './../../assets/edit-task-active.svg';
 import deleteTask from './../../assets/delete-task.svg';
+import { useTodoById } from '../../hooks/useTodoById';
+import Loader from '../../components/Loader';
 
 const Task = () => {
 	const [isEditable, setIsEditable] = useState(false);
@@ -13,12 +16,9 @@ const Task = () => {
 	const navigate = useNavigate();
 	const { id } = useParams();
 	const textareaRef = useRef(null);
-	const editTodo = useTodoStore((state) => state.editTodo);
-	const deleteTodo = useTodoStore((state) => state.deleteTodo);
-	const todos = useTodoStore((state) => state.todos);
-	const todo = Array.isArray(todos)
-		? todos.find((el) => el.id.toString() === id)
-		: null;
+	const { data: todo, isLoading, error } = useTodoById(id);
+	const { mutateAsync: editTodo } = useEditTodo(id, description);
+	const { mutateAsync: deleteTodo } = useDeleteTodo(id);
 
 	useEffect(() => {
 		if (isEditable && textareaRef.current) {
@@ -28,13 +28,11 @@ const Task = () => {
 
 	const toggleEditTodo = async (id, title) => {
 		await editTodo(id, title);
-		console.log('edit');
 		setIsEditable(false);
 	};
 
 	const toggleDeleteTodo = async (id) => {
 		await deleteTodo(id);
-		console.log('delete');
 		navigate(-1);
 	};
 
@@ -57,7 +55,8 @@ const Task = () => {
 						: `${styles.wrapper}`
 				}
 			>
-				{!todo && <p className={styles.text}>Task not found :(</p>}
+				{error && <p className={styles.text}>Task not found :(</p>}
+				{isLoading && <Loader />}
 				{todo && (
 					<div className={styles.field}>
 						<div className={styles.buttons}>

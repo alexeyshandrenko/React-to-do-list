@@ -2,11 +2,11 @@ import { useState } from 'react';
 import styles from './header.module.css';
 import searchIcon from './../../assets/search.svg';
 import sortIcon from './../../assets/sort-task.svg';
-import { useTodoStore } from '../../store/TodoStore';
+import { useCreateTodo } from '../../hooks/useCreateTodo';
 
 const Header = ({ search, setSearch, sorted, setSorted }) => {
 	const [todo, setTodo] = useState('');
-	const createTodo = useTodoStore((state) => state.createTodo);
+	const { mutateAsync } = useCreateTodo(todo);
 
 	const handleChange = (e) => {
 		const { value, name } = e.target;
@@ -21,7 +21,7 @@ const Header = ({ search, setSearch, sorted, setSorted }) => {
 
 	const handleKeyPress = (e) => {
 		if (e.key === 'Enter' && todo) {
-			createTodo(todo).then(() => setTodo(''));
+			mutateAsync(todo).then(() => setTodo(''));
 		}
 	};
 

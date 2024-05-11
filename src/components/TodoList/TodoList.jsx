@@ -1,18 +1,24 @@
+import { useEffect } from 'react';
 import styles from './todoList.module.css';
 import { useTodoStore } from '../../store/TodoStore';
+import { useTodos } from '../../hooks/useTodos';
 import { searchAndSortTodos } from '../../utils/methods';
 import Loader from '../Loader';
 import ErrorMessage from '../ErrorMessage';
 import TodoItem from '../TodoItem';
 
 const TodoList = ({ search, sorted }) => {
-	const todos = useTodoStore((state) => state.todos);
-	const loading = useTodoStore((state) => state.loading);
-	const error = useTodoStore((state) => state.error);
-
+	const { data: todos, isLoading: loading, error } = useTodos();
+	const setTodos = useTodoStore((state) => state.setTodos);
 	const searchedAndSortedTodos = searchAndSortTodos(todos, sorted, search);
 	const noItemsFound =
 		search && searchedAndSortedTodos && searchedAndSortedTodos.length === 0;
+
+	useEffect(() => {
+		if (todos) {
+			setTodos(todos);
+		}
+	}, [setTodos, todos]);
 
 	return (
 		<div
